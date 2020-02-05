@@ -26,6 +26,8 @@ for elem in test_dn:
 print("""
       --- Dagens Nyheter ---
       """)
+
+print("Toppnyheterna just nu")
 for rubrik in rubriker_dn:
     #rubrik_element = 
     print("DN: " + rubrik.text.strip())
@@ -45,7 +47,7 @@ rubriker_svt = results_svt.select("h1")
 for rubrik in rubriker_svt[0:6]:
     print("Svt: " + rubrik.text)
 
-#GT-crawl
+GT-crawl
 print("""
       --- GT ---
       """)
@@ -73,3 +75,18 @@ rubriker_exp = results_exp.select("h2")
 for rubrik in rubriker_exp[0:6]:
     
     print("Expressen: " + rubrik.text)
+
+#Aftonbladet-crawl
+print("""
+      --- Aftonbladet ---
+      """)
+url_bladet = "https://www.aftonbladet.se/"
+page_bladet = requests.get(url_bladet)
+soup_bladet = BeautifulSoup(page_bladet.content, "html.parser")
+results_bladet = soup_bladet.find(class_="_3p4DP")
+rubriker_bladet = results_bladet.select("h3", class_="_3a12d")
+
+for rubrik in rubriker_bladet[0:6]:
+    if None in rubrik:
+        continue
+    print("AB: " + rubrik.text.strip())
