@@ -12,13 +12,13 @@ test_dn = soup_dn.find_all("div", class_="section__block")
 rubriker_dn = results_dn.select("h1.teaser__title")
 pufftext_dn = results_dn.select("p")
 
-#Testar om jag kan få med pufftexten
-for elem in test_dn:
-    rubrik_elem_dn = elem.find("h1", class_="teaser__title")
-    text_elem_dn = elem.find("p")
-    if None in (rubrik_elem_dn, text_elem_dn):
-        continue
-    print(str(rubrik_elem_dn.text.strip()) + " – " + str(text_elem_dn.text.strip()))
+#Testkod för att se om jag kan få med pufftexten
+#for elem in test_dn:
+#    rubrik_elem_dn = elem.find("h1", class_="teaser__title")
+#    text_elem_dn = elem.find("p")
+#    if None in (rubrik_elem_dn, text_elem_dn):
+#        continue
+#    print(str(rubrik_elem_dn.text.strip()) + " – " + str(text_elem_dn.text.strip()))
 
 #Slut test
     
@@ -47,7 +47,7 @@ rubriker_svt = results_svt.select("h1")
 for rubrik in rubriker_svt[0:6]:
     print("Svt: " + rubrik.text)
 
-GT-crawl
+#GT-crawl
 print("""
       --- GT ---
       """)
