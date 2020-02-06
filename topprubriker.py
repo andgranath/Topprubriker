@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from collections import Counter
 
 #DN-crawl
 
@@ -21,7 +22,10 @@ pufftext_dn = results_dn.select("p")
 #    print(str(rubrik_elem_dn.text.strip()) + " – " + str(text_elem_dn.text.strip()))
 
 #Slut test
-    
+
+rubriker_ord = " "
+#En variabel som ska fyllas med samtliga rubriker, så att jag kan plocka ut dom vanligast förekommande orden.
+
     
 print("""
       --- Dagens Nyheter ---
@@ -29,7 +33,8 @@ print("""
 
 print("Toppnyheterna just nu")
 for rubrik in rubriker_dn:
-    #rubrik_element = 
+    rubriker_ord = rubriker_ord + " " + rubrik.text
+    #Lägger till senaste rubriken i rubriker_ord
     print("DN: " + rubrik.text.strip())
 
     
@@ -42,9 +47,10 @@ page_svt = requests.get(url_svt)
 
 soup_svt = BeautifulSoup(page_svt.content, "html.parser")
 results_svt = soup_svt.find(class_="nyh_feed")
-rubriker_svt = results_svt.select("h1")
+rubriker_svt = results_svt.select("h1", class_="nyh_teaser__heading-title")
 
 for rubrik in rubriker_svt[0:6]:
+    rubriker_ord = rubriker_ord + " " + rubrik.text
     print("Svt: " + rubrik.text)
 
 #GT-crawl
@@ -59,6 +65,7 @@ rubriker_gt = results_gt.select("h2")
 
 for rubrik in rubriker_gt[0:6]:
     #Satte ett intervall eftersom GT och Expressen har omfattande block på sina sajter.
+    rubriker_ord = rubriker_ord + " " + rubrik.text
     print("GT: " + rubrik.text)
 
 #Expressen-crawl
@@ -73,7 +80,7 @@ results_exp = soup_exp.find(class_="site-body__column-2 widget-area widget-area-
 rubriker_exp = results_exp.select("h2")
 
 for rubrik in rubriker_exp[0:6]:
-    
+    rubriker_ord = rubriker_ord + " " + rubrik.text
     print("Expressen: " + rubrik.text)
 
 #Aftonbladet-crawl
@@ -89,4 +96,30 @@ rubriker_bladet = results_bladet.select("h3", class_="_3a12d")
 for rubrik in rubriker_bladet[0:6]:
     if None in rubrik:
         continue
+    rubriker_ord = rubriker_ord + " " + rubrik.text
     print("AB: " + rubrik.text.strip())
+
+
+#Söker efter de vanligaste orden i rubrikerna. Först görs strängen om till en lista med split.
+rubrikord_split = rubriker_ord.split()
+rensade_ord = []
+for ord in rubrikord_split:
+    if ord == "sina":
+        continue
+    #Jag utesluter enskilda ord, eftersom jag inte vet hur jag annars ska rensa ut dem.
+    elif ord =="inte":
+        continue
+    elif ord == "och":
+        continue
+    elif ord == "att":
+        continue
+    elif len(ord) >= 3:
+        rensade_ord.append(ord)
+    
+#kör counter på listan som skapas.
+print("""
+      --- De vanligaste orden i rubrikerna ---
+      """)
+counter = Counter(rensade_ord)
+vanligast = counter.most_common(5)
+print(vanligast)
