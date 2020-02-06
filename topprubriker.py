@@ -1,7 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 from collections import Counter
+from datetime import datetime
 
+today = datetime.now()
+print("""
+      Topprubrikerna i svenska medier """ +str(today))
 #DN-crawl
 
 url_dn = "https://www.dn.se/"
@@ -31,7 +35,6 @@ print("""
       --- Dagens Nyheter ---
       """)
 
-print("Toppnyheterna just nu")
 for rubrik in rubriker_dn:
     rubriker_ord = rubriker_ord + " " + rubrik.text
     #Lägger till senaste rubriken i rubriker_ord
@@ -102,17 +105,12 @@ for rubrik in rubriker_bladet[0:6]:
 
 #Söker efter de vanligaste orden i rubrikerna. Först görs strängen om till en lista med split.
 rubrikord_split = rubriker_ord.split()
+fula_ord =["sina", "inte", "och", "han", "hon", "klart", "man", "just", "nu", "till", "från", "har", "mot", "att", "efter", "det", "blir", "vid", "det", "vet", "får", "bakom", "för", "nu:", "nu"]
 rensade_ord = []
 for ord in rubrikord_split:
-    if ord == "sina":
+    if ord.lower() in fula_ord:
         continue
     #Jag utesluter enskilda ord, eftersom jag inte vet hur jag annars ska rensa ut dem.
-    elif ord =="inte":
-        continue
-    elif ord == "och":
-        continue
-    elif ord == "att":
-        continue
     elif len(ord) >= 3:
         rensade_ord.append(ord)
     
