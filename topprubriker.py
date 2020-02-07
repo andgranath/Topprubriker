@@ -101,11 +101,29 @@ for rubrik in rubriker_bladet[0:6]:
         continue
     rubriker_ord = rubriker_ord + " " + rubrik.text
     print("AB: " + rubrik.text.strip())
+    
+#TT-crawl Senaste nytt
+#Hämtar de fem senaste rubrikerna med skribent "TT" på GP.se
+
+print ("""
+       --- Senaste nytt från TT ---""" + str(today))
+url_tt = "https://www.gp.se/av/TT"
+page_tt = requests.get(url_tt)
+soup_tt = BeautifulSoup(page_tt.content, "html.parser")
+results_tt = soup_tt.find(class_="c-automated-section")
+text_tt = results_tt.select("div", class_="c-teaser__summery")
+rubriker_tt = results_tt.select("h2", class_="c-teaser__title")
+
+
+for rubrik in rubriker_tt[0:5]:
+    if None in rubrik:
+        continue
+    print(rubrik.text.strip())
 
 
 #Söker efter de vanligaste orden i rubrikerna. Först görs strängen om till en lista med split.
 rubrikord_split = rubriker_ord.split()
-fula_ord =["sina", "inte", "och", "han", "hon", "klart", "man", "just", "nu", "till", "från", "har", "mot", "att", "efter", "det", "blir", "vid", "det", "vet", "får", "bakom", "för", "nu:", "nu"]
+fula_ord =["sina", "inte", "ett", "som", "men", "och", "han", "hon", "klart", "man", "just", "nu", "till", "från", "har", "mot", "att", "efter", "det", "blir", "vid", "det", "vet", "får", "bakom", "för", "nu:", "nu"]
 rensade_ord = []
 for ord in rubrikord_split:
     if ord.lower() in fula_ord:
